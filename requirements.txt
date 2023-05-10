@@ -2,4 +2,4 @@ numpy==1.21.6
 pandas==1.5.3
 plotly==5.14.1
 streamlit==1.22.0
-xrld==2.0.1
+xrld==2.0.0
