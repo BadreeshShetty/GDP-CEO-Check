@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import random
 
-# Importing GDP, GDP/Capita and Population Data
 
+# Importing GDP, GDP/Capita and Population Data
 
 def gdp_gdp_capita_population():
     # GDP, GDP/Capita, Population Data
@@ -601,7 +601,11 @@ def viz_sp500_russ3000(df, type_index):
 
 
 st.set_page_config(
-    page_title="GDP, GDP/Capita, Population CEO Worker Pay", layout="wide")
+    page_title="Exploratory Data Analysis of GDP, GDP/Capita, Population and SP500/Russell3000", layout="wide")
+
+st.markdown("# Exploratory Data Analysis of GDP, GDP/Capita, Population and SP500/Russell3000")
+st.sidebar.header("Exploratory Data Analysis of GDP, GDP/Capita, Population and SP500/Russell3000")
+
 
 melted_imf_data_gdp, melted_imf_data_gdp_capita, melted_imf_data_pop = gdp_gdp_capita_population()
 
@@ -613,245 +617,54 @@ st.write("No of countries in the Dataset from IMF Data ",
 top_n = st.slider('Select top countries', 10, 25, 10)
 st.write("Selected ", top_n, " countries")
 
-tab_eda, tab_filter_analysis = st.tabs(
-    ["Exploratory Data Analysis of GDP, GDP/Capita, Population and SP500/Russell3000", "Filter Analysis"])
+st.write("Exploratory Data Analysis of GDP, GDP/Capita, Population and SP500/Russell3000")
 
-with tab_eda:
-    text_map = "GDP"
-    text_on_map = "GDP"
-    tab1 = "GDP over 1980-2028 (Choropleth Map)"
-    tab2 = "Comparison of GDP over 1980-2028 for top " + \
-        str(top_n)+" countries (Bar Polar)"
-    title_map = "GDP (Billions of U.S. dollars) by Country (1980-2028)"
-    map_bar_polar(melted_imf_data_gdp, text_map, tab1,
-                  tab2, title_map, top_n, text_on_map)
+text_map = "GDP"
+text_on_map = "GDP"
+tab1 = "GDP over 1980-2028 (Choropleth Map)"
+tab2 = "Comparison of GDP over 1980-2028 for top " + \
+    str(top_n)+" countries (Bar Polar)"
+title_map = "GDP (Billions of U.S. dollars) by Country (1980-2028)"
+map_bar_polar(melted_imf_data_gdp, text_map, tab1,
+                tab2, title_map, top_n, text_on_map)
 
-    text_map = "GDP/Capita"
-    text_on_map = "GDP/Capita"
-    tab1 = "GDP/Capita over 1980-2028 (Choropleth Map)"
-    tab2 = "Comparison of GDP/Capita over 1980-2028 for top " + \
-        str(top_n)+" countries (Bar Polar)"
-    title_map = "GDP/Capita (Thousands of U.S. dollars) by Country (1980-2028)"
-    map_bar_polar(melted_imf_data_gdp_capita, text_map,
-                  tab1, tab2, title_map, top_n, text_on_map)
+text_map = "GDP/Capita"
+text_on_map = "GDP/Capita"
+tab1 = "GDP/Capita over 1980-2028 (Choropleth Map)"
+tab2 = "Comparison of GDP/Capita over 1980-2028 for top " + \
+    str(top_n)+" countries (Bar Polar)"
+title_map = "GDP/Capita (Thousands of U.S. dollars) by Country (1980-2028)"
+map_bar_polar(melted_imf_data_gdp_capita, text_map,
+                tab1, tab2, title_map, top_n, text_on_map)
 
-    text_map = "Population"
-    text_on_map = "Population"
-    tab1 = "Population over 1980-2028 (Choropleth Map)"
-    tab2 = "Comparison of Population over 1980-2028 for top " + \
-        str(top_n)+" countries (Bar Polar)"
-    title_map = "Population (Millions of people) by Country (1980-2028)"
-    map_bar_polar(melted_imf_data_pop, text_map, tab1,
-                  tab2, title_map, top_n, text_on_map)
+text_map = "Population"
+text_on_map = "Population"
+tab1 = "Population over 1980-2028 (Choropleth Map)"
+tab2 = "Comparison of Population over 1980-2028 for top " + \
+    str(top_n)+" countries (Bar Polar)"
+title_map = "Population (Millions of people) by Country (1980-2028)"
+map_bar_polar(melted_imf_data_pop, text_map, tab1,
+                tab2, title_map, top_n, text_on_map)
 
-    st.divider()
+st.divider()
 
-    # SP500
-    pd.set_option('display.float_format', lambda x: '%.2f' % x)
+# SP500
+pd.set_option('display.float_format', lambda x: '%.2f' % x)
 
-    st.header("Data from SP500 and Russell3000")
+st.header("Data from SP500 and Russell3000")
 
-    tab1_sp500, tab2_rus3000 = st.tabs(["SP500", "Russell 3000"])
+tab1_sp500, tab2_rus3000 = st.tabs(["SP500", "Russell 3000"])
 
-    with tab1_sp500:
-        st.header("SP500")
-        sdf = sdf_i()
+with tab1_sp500:
+    st.header("SP500")
+    sdf = sdf_i()
 
-        viz_sp500_russ3000(sdf, "SP500")
-    with tab2_rus3000:
-        st.header("Russell3000")
-        rdf = rdf_i()
-        viz_sp500_russ3000(rdf, "Russ3000")
+    viz_sp500_russ3000(sdf, "SP500")
+with tab2_rus3000:
+    st.header("Russell3000")
+    rdf = rdf_i()
+    viz_sp500_russ3000(rdf, "Russ3000")
 
-with tab_filter_analysis:
-    # Median Worker Pay and GDP/Capita
 
-    med_pay = st.slider('Median Pay Value', 7402, 146146, 7402)
-    st.write("Median Pay Selected $", med_pay)
 
-    melted_imf_data_gdp, melted_imf_data_gdp_capita, melted_imf_data_pop = gdp_gdp_capita_population()
 
-    tab1_less_gdp_capita, tab2_great_gdp_capita = st.tabs(
-        ["MedianPay less than $"+str(med_pay), "MedianPay greater than $"+str(med_pay)])
-    
-    with tab1_less_gdp_capita:
-        melted_imf_data_gdp_capita = melted_imf_data_gdp_capita[
-            melted_imf_data_gdp_capita["GDP/Capita"] <= med_pay]
-        text_map = "GDP/Capita"
-        text_on_map = "GDP/Capita less than Median Pay $"+str(med_pay)
-        tab1 = "GDP/Capita over 1980-2028 (Choropleth Map)"
-        tab2 = "Comparison of GDP/Capita over 1980-2028 for top " + \
-            str(top_n)+" countries (Bar Polar)"
-        title_map = "GDP/Capita (Thousands of U.S. dollars) by Country (1980-2028)"
-        map_bar_polar(melted_imf_data_gdp_capita, text_map,
-                    tab1, tab2, title_map, top_n, text_on_map)
-
-        tab1_sp500_gdp_capita, tab2_rus3000_gdp_capita = st.tabs(
-            ["MedianPay less than $"+str(med_pay)+" for SP500", "MedianPay less than $"+str(med_pay)+" for Rus3000"])
-        with tab1_sp500_gdp_capita:
-            sdf = sdf_i()
-            sdf = sdf[sdf["median_worker_pay"] <= med_pay]
-            scatter_plot_options_sp_rus(sdf, "SP500_less_GDP_capita")
-        with tab2_rus3000_gdp_capita:
-            rdf = rdf_i()
-            rdf = rdf[rdf["median_worker_pay"] <= med_pay]
-            scatter_plot_options_sp_rus(rdf, "Russ3000_less_GDP_capita")
-
-    melted_imf_data_gdp, melted_imf_data_gdp_capita, melted_imf_data_pop = gdp_gdp_capita_population()
-
-    with tab2_great_gdp_capita:
-        melted_imf_data_gdp_capita = melted_imf_data_gdp_capita[~(
-            melted_imf_data_gdp_capita["GDP/Capita"] <= med_pay)]
-        text_map = "GDP/Capita"
-        text_on_map = "GDP/Capita greater than Median Pay $"+str(med_pay)
-        tab1 = "GDP/Capita over 1980-2028 (Choropleth Map)"
-        tab2 = "Comparison of GDP/Capita over 1980-2028 for top " + \
-            str(top_n)+" countries (Bar Polar)"
-        title_map = "GDP/Capita (Thousands of U.S. dollars) by Country (1980-2028)"
-        map_bar_polar(melted_imf_data_gdp_capita, text_map,
-                    tab1, tab2, title_map, top_n, text_on_map)
-
-        tab1_sp500_gdp_capita, tab2_rus3000_gdp_capita = st.tabs(
-            ["MedianPay greater than $"+str(med_pay)+" for SP500", "MedianPay greater than $"+str(med_pay)+" for Russ3000"])
-        with tab1_sp500_gdp_capita:
-            sdf = sdf_i()
-            sdf = sdf[~(sdf["median_worker_pay"] <= med_pay)]
-            scatter_plot_options_sp_rus(sdf, "SP500_great_GDP_capita")
-        with tab2_rus3000_gdp_capita:
-            rdf = rdf_i()
-            rdf = rdf[~(rdf["median_worker_pay"] <= med_pay)]
-            scatter_plot_options_sp_rus(rdf, "Russ3000_great_GDP_capita")
-
-    # Gross Profits and GDP
-
-    gross_profits = st.slider('Gross Profits Value $(Billions) ', 1, 225, 1)
-    st.write("Gross Profit Selected $(Billions)", gross_profits)
-
-    st.warning(
-        'Gross Profits in Billions other columns in their inherent values', icon="⚠️")
-
-    melted_imf_data_gdp, melted_imf_data_gdp_capita, melted_imf_data_pop = gdp_gdp_capita_population()
-    
-    tab1_less_gdp, tab2_great_gdp = st.tabs(["Gross Profits less than $"+str(
-        gross_profits)+"B", "Gross Profits greater than $"+str(gross_profits)+"B"])
-
-    with tab1_less_gdp:
-        melted_imf_data_gdp = melted_imf_data_gdp[melted_imf_data_gdp["GDP"]
-                                                <= gross_profits]
-        text_map = "GDP"
-        text_on_map = "GDP less than Gross Profits $"+str(gross_profits)+"B"
-        tab1 = "GDP over 1980-2028 (Choropleth Map)"
-        tab2 = "Comparison of GDP over 1980-2028 for top " + \
-            str(top_n)+" countries (Bar Polar)"
-        title_map = "GDP (Billions of U.S. dollars) by Country (1980-2028)"
-        map_bar_polar(melted_imf_data_gdp, text_map, tab1,
-                    tab2, title_map, top_n, text_on_map)
-
-        tab1_sp500_gdp, tab2_rus3000_gdp = st.tabs(["Gross Profits less than $"+str(
-            gross_profits)+"B for SP500", "Gross Profits less than $"+str(gross_profits)+"B for Russ3000"])
-        with tab1_sp500_gdp:
-            sdf = sdf_i()
-            sdf["grossProfits"] = sdf["grossProfits"]/1000000000
-            sdf = sdf[sdf["grossProfits"] <= gross_profits]
-            scatter_plot_options_sp_rus(sdf, "SP500_less_GDP")
-        with tab2_rus3000_gdp:
-            rdf = rdf_i()
-            rdf["grossProfits"] = rdf["grossProfits"]/1000000000
-            rdf = rdf[rdf["grossProfits"] <= gross_profits]
-            scatter_plot_options_sp_rus(rdf, "Russ3000_less_GDP")
-
-    melted_imf_data_gdp, melted_imf_data_gdp_capita, melted_imf_data_pop = gdp_gdp_capita_population()
-
-    with tab2_great_gdp:
-        melted_imf_data_gdp = melted_imf_data_gdp[~(
-            melted_imf_data_gdp["GDP"] <= gross_profits)]
-        text_map = "GDP"
-        text_on_map = "GDP greater than Gross Profits $"+str(gross_profits)+"B"
-        tab1 = "GDP over 1980-2028 (Choropleth Map)"
-        tab2 = "Comparison of GDP over 1980-2028 for top " + \
-            str(top_n)+" countries (Bar Polar)"
-        title_map = "GDP (Billions of U.S. dollars) by Country (1980-2028)"
-        map_bar_polar(melted_imf_data_gdp, text_map, tab1,
-                    tab2, title_map, top_n, text_on_map)
-
-        tab1_sp500_gdp, tab2_rus3000_gdp = st.tabs(["Gross Profits greater than $"+str(
-            gross_profits)+"B for SP500", "Gross Profits greater than $"+str(gross_profits)+"B for Russ3000"])
-        with tab1_sp500_gdp:
-            sdf = sdf_i()
-            sdf["grossProfits"] = sdf["grossProfits"]/1000000000
-            sdf = sdf[~(sdf["grossProfits"] <= gross_profits)]
-            scatter_plot_options_sp_rus(sdf, "SP500_great_GDP")
-        with tab2_rus3000_gdp:
-            rdf = rdf_i()
-            rdf["grossProfits"] = rdf["grossProfits"]/1000000000
-            rdf = rdf[~(rdf["grossProfits"] <= gross_profits)]
-            scatter_plot_options_sp_rus(rdf, "Russ3000_great_GDP")
-
-    # Full Time Employess Profits and Population
-
-    full_time_employees = st.slider(
-        'Full time Employees (Millions) ', 0.0125, 2.1, 1.0)
-    st.write("Full Time Employees Selected (Millions)", full_time_employees)
-
-    st.warning(
-        'Full Time Employees in Millions other columns in their inherent values', icon="⚠️")
-
-    melted_imf_data_gdp, melted_imf_data_gdp_capita, melted_imf_data_pop = gdp_gdp_capita_population()
-    
-    tab1_less_pop, tab2_great_pop = st.tabs(["Population less than "+str(full_time_employees) +
-                                               "M people", "Population greater than "+str(full_time_employees)+"M people"])
-
-    with tab1_less_pop:
-        melted_imf_data_pop = melted_imf_data_pop[melted_imf_data_pop["Population"]
-                                                <= full_time_employees]
-        text_map = "Population"
-        text_on_map = "Population less than Full Time Employees: " + \
-            str(full_time_employees)+"M people"
-        tab1 = "Population over 1980-2028 (Choropleth Map)"
-        tab2 = "Comparison of Population over 1980-2028 for top " + \
-            str(top_n)+" countries (Bar Polar)"
-        title_map = "Population of by Country (1980-2028)"
-        map_bar_polar(melted_imf_data_pop, text_map, tab1,
-                    tab2, title_map, top_n, text_on_map)
-
-        tab1_sp500_pop, tab2_rus3000_pop = st.tabs(["Population less than "+str(full_time_employees) +
-                                                "M people for SP500", "Population less than "+str(full_time_employees)+"M people for Russ3000"])
-        
-        with tab1_sp500_pop:
-            sdf = sdf_i()
-            sdf["fullTimeEmployees"] = sdf["fullTimeEmployees"]/1000000
-            sdf = sdf[sdf["fullTimeEmployees"] <= full_time_employees]
-            scatter_plot_options_sp_rus(sdf, "SP500_less_Population")
-        with tab2_rus3000_pop:
-            rdf = rdf_i()
-            rdf["fullTimeEmployees"] = rdf["fullTimeEmployees"]/1000000
-            rdf = rdf[rdf["fullTimeEmployees"] <= full_time_employees]
-            scatter_plot_options_sp_rus(rdf, "Russ3000_less_Population")
-
-    melted_imf_data_gdp, melted_imf_data_gdp_capita, melted_imf_data_pop = gdp_gdp_capita_population()
-    
-    with tab2_great_pop:
-        melted_imf_data_pop = melted_imf_data_pop[~(
-            melted_imf_data_pop["Population"] <= full_time_employees)]
-        text_map = "Population"
-        text_on_map = "Population greater than Full Time Employees: " + \
-            str(full_time_employees)+" M people"
-        tab1 = "Population over 1980-2028 (Choropleth Map)"
-        tab2 = "Comparison of Population over 1980-2028 for top " + \
-            str(top_n)+" countries (Bar Polar)"
-        title_map = "Population of by Country (1980-2028)"
-        map_bar_polar(melted_imf_data_pop, text_map, tab1,
-                    tab2, title_map, top_n, text_on_map)
-
-        tab1_sp500_pop, tab2_rus3000_pop = st.tabs(["Population greater than "+str(full_time_employees) +
-                                                "M people for SP500", "Population greater than "+str(full_time_employees)+"M people for Russ3000"])
-        with tab1_sp500_pop:
-            sdf = sdf_i()
-            sdf["fullTimeEmployees"] = sdf["fullTimeEmployees"]/1000000
-            sdf = sdf[~(sdf["fullTimeEmployees"] <= full_time_employees)]
-            scatter_plot_options_sp_rus(sdf, "SP500_great_Population")
-        with tab2_rus3000_pop:
-            rdf = rdf_i()
-            rdf["fullTimeEmployees"] = rdf["fullTimeEmployees"]/1000000
-            rdf = rdf[~(rdf["fullTimeEmployees"] <= full_time_employees)]
-            scatter_plot_options_sp_rus(rdf, "Russ3000_great_Population")
